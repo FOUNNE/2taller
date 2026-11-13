@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hashtags — Pantalla · PEDI FOUNNE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Archivo+Narrow:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B3F71;
+    --navy-d:#072E55;
+    --violeta:#7654A0;
+    --teal:#4097AB;
+    --azul:#4A7BB3;
+    --claro:#E6EDF6;
+    --tenue:#9BB4D2;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{
+    background:var(--navy);color:var(--claro);
+    font-family:"Archivo","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    display:flex;flex-direction:column;
+  }
+
+  header{padding:clamp(16px,2.4vh,26px) clamp(24px,3.2vw,48px) 0;flex:0 0 auto}
+  .fila{display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+  .kicker{
+    font-family:"Archivo Narrow",sans-serif;font-size:clamp(12px,1.05vw,16px);
+    letter-spacing:.12em;text-transform:uppercase;color:var(--tenue);margin:0 0 6px;
+  }
+  h1{
+    margin:0;font-size:clamp(24px,2.9vw,44px);font-weight:700;
+    letter-spacing:-.02em;color:#fff;line-height:1.05;
+  }
+  .cifras{display:flex;gap:clamp(20px,2.4vw,38px);flex:0 0 auto;text-align:right}
+  .cifra b{display:block;font-size:clamp(28px,3.2vw,50px);font-weight:700;color:#fff;line-height:1}
+  .cifra span{
+    font-family:"Archivo Narrow",sans-serif;font-size:clamp(11px,.85vw,14px);
+    color:var(--tenue);letter-spacing:.06em;text-transform:uppercase;
+  }
+  .arco{display:block;width:100%;height:16px;margin-top:clamp(10px,1.6vh,18px)}
+
+  main{flex:1 1 auto;position:relative;overflow:hidden}
+  #nube{display:block;width:100%;height:100%}
+  #nube text{
+    font-weight:700;
+    font-family:"Archivo","Segoe UI",system-ui,Arial,sans-serif;
+    opacity:0;
+  }
+  #nube text.on{opacity:1;transition:opacity .5s ease-out}
+  .vacio{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:var(--tenue);font-size:clamp(18px,1.8vw,28px);text-align:center;padding:0 40px;
+  }
+  .vacio.oculto{display:none}
+
+  footer{
+    flex:0 0 auto;padding:clamp(10px,1.4vh,16px) clamp(24px,3.2vw,48px) clamp(14px,2vh,22px);
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .url{font-size:clamp(13px,1.1vw,17px);color:var(--claro)}
+  .url code{
+    font-family:"Archivo",monospace;color:#fff;font-weight:700;
+    font-size:clamp(14px,1.25vw,19px);
+  }
+  .ayuda{
+    font-family:"Archivo Narrow",sans-serif;
+    font-size:clamp(11px,.9vw,14px);color:var(--tenue);text-align:right;
+  }
+  .punto{
+    display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);
+    margin-right:7px;vertical-align:middle;
+  }
+  .punto.late{animation:late 2.4s ease-in-out infinite}
+  @keyframes late{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="fila">
+    <div>
+      <p class="kicker">Taller participativo 2 · PEDI 2027–2032</p>
+      <h1>La Facultad que queremos, en hashtags</h1>
+    </div>
+    <div class="cifras">
+      <div class="cifra"><b id="nMesas">0</b><span>mesas</span></div>
+      <div class="cifra"><b id="nTags">0</b><span>hashtags</span></div>
+    </div>
+  </div>
+  <svg class="arco" viewBox="0 0 1000 16" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="gpedi" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#4097AB"/>
+        <stop offset="50%"  stop-color="#4A7BB3"/>
+        <stop offset="100%" stop-color="#9B7BC4"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 16 Q500 -12 1000 16" fill="none" stroke="url(#gpedi)" stroke-width="4"/>
+  </svg>
+</header>
+
+<main>
+  <svg id="nube" aria-hidden="true"></svg>
+  <div class="vacio" id="vacio">Esperando los primeros hashtags de las mesas…</div>
+</main>
+
+<footer>
+  <div class="url">Sumá los de tu mesa en <code id="urlMesa">founne.github.io/hashtags</code></div>
+  <div class="ayuda"><span class="punto late"></span>Se actualiza solo cada 5 segundos · F para pantalla completa</div>
+</footer>
+
+<script>
+/* ====== CONFIGURACIÓN ====== */
+const API = 'https://script.google.com/macros/s/AKfycbwezfqDSNiATL5-fcsQBASgvxn5vntBZCoytJ3vJ1IvAid2A-Rgtv-yTiQP-EYcFjec/exec';
+/* =========================== */
+
+/* Tintes claros de la paleta PEDI: todos legibles sobre el azul institucional. */
+const COLORES = ['#FFFFFF', '#8FCBD8', '#BCA4E0', '#CBDCF0', '#79B6C7', '#A98FD4'];
+
+const svg   = document.getElementById('nube');
+const vacio = document.getElementById('vacio');
+const medidor = document.createElement('canvas').getContext('2d');
+const FUENTE = '"Archivo", "Segoe UI", system-ui, Arial, sans-serif';
+
+let firmaActual = '';     // para no redibujar si no cambió nada
+let colocados = {};       // hashtag -> color ya asignado
+
+function normalizar(t){
+  return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+/* ---------- agrupa los hashtags y cuenta mesas distintas por cada uno ---------- */
+function agrupar(lista){
+  const g = {};
+  lista.forEach(r => {
+    const k = normalizar(r.texto);
+    if(!k) return;
+    if(!g[k]) g[k] = {formas:{}, mesas:new Set()};
+    g[k].formas[r.texto] = (g[k].formas[r.texto] || 0) + 1;
+    g[k].mesas.add(r.mesa);
+  });
+  return Object.values(g).map(v => ({
+    // se muestra la grafía que más mesas usaron
+    texto: Object.keys(v.formas).sort((a,b) => v.formas[b] - v.formas[a])[0],
+    n: v.mesas.size
+  })).sort((a,b) => b.n - a.n || a.texto.localeCompare(b.texto, 'es'));
+}
+
+/* ---------- un intento de acomodar todo con una escala dada ---------- */
+function acomodar(items, W, H, escala){
+  const maxN = items[0].n;
+  const minN = items[items.length - 1].n;
+  const techo = Math.min(150, Math.max(26, 1150 / Math.sqrt(items.length + 3)) * escala);
+  const piso  = Math.max(13, techo * 0.34);
+
+  const tam = it => maxN === minN
+    ? techo * 0.72
+    : piso + (techo - piso) * Math.pow((it.n - minN) / (maxN - minN), 0.8);
+
+  const puestos = [];
+  const ubicados = [];
+
+  for (const it of items) {
+    const size = Math.max(12, Math.round(tam(it)));
+    const txt = '#' + it.texto;
+    medidor.font = '700 ' + size + 'px ' + FUENTE;
+    const w = medidor.measureText(txt).width;
+    const h = size * 1.06;
+
+    // espiral desde el centro hasta encontrar un hueco libre
+    let x = 0, y = 0, ok = false;
+    const paso = Math.max(3.5, size / 14);
+    for (let t = 0; t < 9000; t++) {
+      const ang = t * 0.2;
+      const rad = paso * ang / 9;
+      x = W / 2 + rad * Math.cos(ang) * 1.75;   // elipse: la pantalla es más ancha que alta
+      y = H / 2 + rad * Math.sin(ang) * 0.95;
+      const caja = {x1: x - w/2 - 7, y1: y - h/2 - 3, x2: x + w/2 + 7, y2: y + h/2 + 3};
+      if (caja.x1 < 20 || caja.x2 > W - 20 || caja.y1 < 12 || caja.y2 > H - 12) continue;
+      if (puestos.some(p => !(caja.x2 < p.x1 || caja.x1 > p.x2 || caja.y2 < p.y1 || caja.y1 > p.y2))) continue;
+      puestos.push(caja); ok = true; break;
+    }
+    if (!ok) return null;        // no entró: este intento se descarta entero
+    ubicados.push({it: it, x: x, y: y, size: size, txt: txt});
+  }
+  return ubicados;
+}
+
+/* ---------- dibuja, ajustando la escala hasta que entren TODOS ---------- */
+function dibujar(items){
+  const W = svg.clientWidth, H = svg.clientHeight;
+  if(!W || !H) return;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  // Se busca la escala más grande con la que entren TODOS los hashtags:
+  // ninguna mesa puede quedarse sin ver el suyo, y con pocos hashtags la
+  // nube tiene que ocupar la pantalla en vez de quedar apilada en el centro.
+  let ubicados = acomodar(items, W, H, 1);
+  if (ubicados) {
+    for (let escala = 1.15; escala < 3.2; escala *= 1.15) {
+      const intento = acomodar(items, W, H, escala);
+      if (!intento) break;
+      ubicados = intento;
+    }
+  } else {
+    for (let escala = 0.88; escala > 0.22 && !ubicados; escala *= 0.88) {
+      ubicados = acomodar(items, W, H, escala);
+    }
+  }
+  if (!ubicados) return;
+
+  const nuevos = {};
+  const frag = document.createDocumentFragment();
+
+  ubicados.forEach((u, k) => {
+    const clave = normalizar(u.it.texto);
+    const previo = colocados[clave];
+    const color = previo ? previo : COLORES[k % COLORES.length];
+    nuevos[clave] = color;
+
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    el.setAttribute('x', u.x.toFixed(1));
+    el.setAttribute('y', u.y.toFixed(1));
+    el.setAttribute('text-anchor', 'middle');
+    el.setAttribute('dominant-baseline', 'central');
+    el.setAttribute('font-size', u.size);
+    el.setAttribute('fill', color);
+    el.textContent = u.txt;
+    if (u.it.n > 1) {
+      const tip = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      tip.textContent = u.it.n + ' mesas';
+      el.appendChild(tip);
+    }
+    frag.appendChild(el);
+  });
+
+  svg.textContent = '';
+  svg.appendChild(frag);
+  colocados = nuevos;
+  [...svg.querySelectorAll('text')].forEach((el, i) => {
+    setTimeout(() => el.classList.add('on'), 30 + i * 20);
+  });
+}
+
+async function traer(){
+  try{
+    const r = await fetch(API + '?accion=resultados&t=' + Date.now());
+    const j = await r.json();
+    if(!j || !j.ok) return;
+
+    document.getElementById('nMesas').textContent = j.mesas || 0;
+    const items = agrupar(j.hashtags || []);
+    document.getElementById('nTags').textContent = items.length;
+
+    if(!items.length){ vacio.classList.remove('oculto'); svg.textContent = ''; return; }
+    vacio.classList.add('oculto');
+
+    const firma = items.map(i => i.texto + ':' + i.n).join('|');
+    if(firma === firmaActual) return;    // sin cambios: no se redibuja
+    firmaActual = firma;
+    dibujar(items);
+  }catch(e){ /* reintenta en el próximo ciclo */ }
+}
+
+let redib;
+window.addEventListener('resize', () => {
+  clearTimeout(redib);
+  redib = setTimeout(() => { firmaActual = ''; traer(); }, 300);
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'f' || e.key === 'F'){
+    if(document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  }
+  if(e.key === 'r' || e.key === 'R'){ firmaActual = ''; traer(); }
+});
+
+// las fuentes cambian el ancho del texto: se redibuja cuando terminan de cargar
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { firmaActual = ''; traer(); });
+}
+
+traer();
+setInterval(traer, 5000);
+</script>
+</body>
+</html>

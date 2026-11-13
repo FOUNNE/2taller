@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hashtags de la Facultad — Taller 2 · PEDI FOUNNE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Narrow:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B3F71;
+    --navy-d:#082F57;
+    --violeta:#7654A0;
+    --teal:#4097AB;
+    --azul:#4A7BB3;
+    --papel:#F5F6FA;
+    --tinta:#1F2B3D;
+    --gris:#64708A;
+    --linea:#DFE3ED;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--papel);color:var(--tinta);
+    font-family:"Archivo","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    font-size:17px;line-height:1.45;-webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 140px}
+
+  /* ---------- Encabezado ---------- */
+  header{background:var(--navy);color:#fff;padding:24px 18px 0}
+  .head-in{max-width:640px;margin:0 auto}
+  header .kicker{
+    font-family:"Archivo Narrow","Archivo",sans-serif;
+    font-size:13px;letter-spacing:.12em;color:#9BB4D2;margin:0 0 8px;text-transform:uppercase;
+  }
+  header h1{margin:0 0 10px;font-size:27px;line-height:1.12;font-weight:700;letter-spacing:-.015em}
+  .regla{width:86px;height:4px;background:var(--violeta);border-radius:2px;margin:0 0 14px}
+  header p{margin:0 0 22px;color:#C3D2E6;font-size:15px;max-width:34em}
+  .arco{display:block;width:100%;height:16px}
+
+  /* ---------- Mesa ---------- */
+  .mesa-box{
+    background:#fff;border:1px solid var(--linea);border-radius:8px;
+    padding:16px;margin:22px 0 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .mesa-box label{font-weight:600;font-size:17px;flex:1 1 auto;color:var(--navy)}
+  .mesa-box small{display:block;font-weight:400;color:var(--gris);font-size:14px;margin-top:2px}
+  #mesa{
+    width:112px;font-family:"Archivo",sans-serif;font-size:32px;font-weight:700;text-align:center;
+    color:var(--navy);padding:6px;border:2px solid var(--linea);border-radius:7px;background:#fff;
+  }
+  #mesa:focus{outline:none;border-color:var(--violeta);box-shadow:0 0 0 3px rgba(118,84,160,.20)}
+
+  /* ---------- Consigna ---------- */
+  .consigna{
+    background:#fff;border:1px solid var(--linea);border-radius:8px;padding:16px;margin:0 0 22px;
+  }
+  .consigna p{margin:0;font-size:16.5px;font-weight:600;color:var(--navy);line-height:1.35}
+  .consigna small{display:block;margin-top:9px;color:var(--gris);font-size:14px;font-weight:400}
+
+  /* ---------- Campos ---------- */
+  .campo{margin:0 0 12px}
+  .linea-campo{
+    display:flex;align-items:stretch;border:1px solid var(--linea);
+    border-radius:8px;background:#fff;overflow:hidden;
+  }
+  .linea-campo .num{
+    flex:0 0 auto;width:34px;display:flex;align-items:center;justify-content:center;
+    font-family:"Archivo Narrow",sans-serif;font-size:13px;font-weight:700;
+    color:#9AA5BC;background:#EEF0F6;border-right:1px solid var(--linea);
+  }
+  .linea-campo .gato{
+    flex:0 0 auto;display:flex;align-items:center;padding:0 2px 0 12px;
+    font-size:22px;font-weight:700;color:var(--violeta);
+  }
+  .linea-campo input{
+    flex:1 1 auto;border:none;outline:none;background:transparent;
+    font-family:"Archivo",sans-serif;font-size:19px;font-weight:600;color:var(--navy);
+    padding:13px 12px 13px 2px;min-width:0;
+  }
+  .linea-campo input::placeholder{color:#AFB8CA;font-weight:400;font-size:16.5px}
+  .linea-campo:focus-within{border-color:var(--violeta);box-shadow:0 0 0 3px rgba(118,84,160,.18)}
+  .linea-campo.lleno{border-color:#9CC9D2}
+  .linea-campo.lleno .num{background:#E8F3F5;color:var(--teal)}
+  .vista{margin:5px 0 0 34px;font-size:14px;color:var(--gris);min-height:19px}
+  .vista b{color:var(--teal);font-weight:700}
+
+  /* ---------- Pie fijo ---------- */
+  .pie{
+    position:fixed;left:0;right:0;bottom:0;background:rgba(245,246,250,.97);
+    border-top:1px solid var(--linea);padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+    backdrop-filter:blur(6px);z-index:10;
+  }
+  .pie-in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:14px}
+  .estado{flex:1 1 auto;font-size:14px;color:var(--gris);line-height:1.3}
+  .estado b{color:var(--navy)}
+  button#enviar{
+    flex:0 0 auto;font-family:"Archivo",sans-serif;font-size:17px;font-weight:600;
+    background:var(--navy);color:#fff;border:none;border-radius:7px;padding:14px 26px;cursor:pointer;
+  }
+  button#enviar:disabled{background:#AEB7C9;cursor:not-allowed}
+  button#enviar:not(:disabled):active{background:var(--violeta)}
+
+  /* ---------- Confirmación ---------- */
+  .listo{display:none;text-align:center;padding:60px 10px 40px}
+  .listo.on{display:block}
+  .tilde{
+    width:76px;height:76px;border-radius:50%;background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 22px;
+  }
+  .listo h2{margin:0 0 8px;font-size:25px;font-weight:700;color:var(--navy)}
+  .listo p{margin:0 0 20px;color:var(--gris);max-width:28em;margin-inline:auto}
+  .enviados{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 26px}
+  .enviados span{
+    background:#fff;border:1px solid var(--linea);border-radius:999px;
+    padding:7px 15px;font-size:16px;font-weight:600;color:var(--navy);
+  }
+  .listo button{
+    font-family:"Archivo",sans-serif;font-size:16px;background:#fff;color:var(--navy);
+    border:1px solid var(--navy);border-radius:7px;padding:11px 22px;cursor:pointer;
+  }
+  .aviso{
+    display:none;margin:12px 0 0;padding:11px 13px;border-radius:7px;background:#FBF1F1;
+    border:1px solid #E7C4C4;color:#92333A;font-size:15px;
+  }
+  .aviso.on{display:block}
+  .marca{
+    margin:30px 0 0;padding-top:16px;border-top:1px solid var(--linea);
+    font-family:"Archivo Narrow",sans-serif;font-size:12.5px;color:#93A0B8;
+    letter-spacing:.04em;text-align:center;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .listo.on .tilde{animation:pop .32s ease-out}
+    @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-in">
+    <p class="kicker">Taller participativo 2 · PEDI 2027–2032</p>
+    <h1>Los hashtags de la Facultad</h1>
+    <div class="regla"></div>
+    <p>Completen entre todos los integrantes de la mesa. Hasta cinco hashtags.</p>
+  </div>
+  <svg class="arco" viewBox="0 0 640 16" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="gpedi" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#4097AB"/>
+        <stop offset="50%"  stop-color="#4A7BB3"/>
+        <stop offset="100%" stop-color="#7654A0"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 16 Q320 -10 640 16" fill="none" stroke="url(#gpedi)" stroke-width="4"/>
+  </svg>
+</header>
+
+<div class="wrap">
+  <form id="form" novalidate>
+    <div class="mesa-box">
+      <label for="mesa">Número de mesa
+        <small>Está en el cartel del centro de la mesa</small>
+      </label>
+      <input id="mesa" type="number" inputmode="numeric" min="1" max="99" placeholder="—">
+    </div>
+
+    <div class="consigna">
+      <p>¿Con qué hashtags describirían a la Facultad que quieren para 2032?</p>
+      <small>Una idea por cuadro. Pueden usar varias palabras: se unen solas en un hashtag.</small>
+    </div>
+
+    <div id="campos"></div>
+    <div class="aviso" id="aviso"></div>
+  </form>
+
+  <div class="listo" id="listo">
+    <div class="tilde">✓</div>
+    <h2>Hashtags enviados</h2>
+    <p>La mesa <b id="mesaOk"></b> quedó registrada. Ya están en la pantalla del salón.</p>
+    <div class="enviados" id="enviados"></div>
+    <button type="button" id="corregir">Corregir y volver a enviar</button>
+  </div>
+
+  <p class="marca">Plan Estratégico de Desarrollo Institucional<br>Facultad de Odontología · UNNE</p>
+</div>
+
+<div class="pie" id="pie">
+  <div class="pie-in">
+    <div class="estado" id="estado">Elegí el número de mesa para empezar</div>
+    <button type="button" id="enviar" disabled>Enviar</button>
+  </div>
+</div>
+
+<script>
+/* ====== CONFIGURACIÓN ====== */
+const API = 'https://script.google.com/macros/s/AKfycbwezfqDSNiATL5-fcsQBASgvxn5vntBZCoytJ3vJ1IvAid2A-Rgtv-yTiQP-EYcFjec/exec';   // URL de implementación del Apps Script
+const CUADROS = 5;
+/* =========================== */
+
+const PISTAS = ['Ej: facultad abierta', 'Ej: más clínica', 'Otra idea', 'Otra idea', 'Otra idea'];
+
+const cont = document.getElementById('campos');
+for (let n = 1; n <= CUADROS; n++) {
+  const d = document.createElement('div');
+  d.className = 'campo';
+  d.innerHTML =
+    '<div class="linea-campo" data-caja="' + n + '">' +
+      '<span class="num">' + n + '</span>' +
+      '<span class="gato">#</span>' +
+      '<input type="text" maxlength="40" autocomplete="off" autocapitalize="words" ' +
+      'data-n="' + n + '" placeholder="' + PISTAS[n - 1] + '">' +
+    '</div>' +
+    '<div class="vista" data-vista="' + n + '"></div>';
+  cont.appendChild(d);
+}
+
+const mesa    = document.getElementById('mesa');
+const inputs  = [...document.querySelectorAll('input[data-n]')];
+const estado  = document.getElementById('estado');
+const btn     = document.getElementById('enviar');
+const aviso   = document.getElementById('aviso');
+const form    = document.getElementById('form');
+const listo   = document.getElementById('listo');
+const pie     = document.getElementById('pie');
+const CLAVE   = 'pedi_hashtags_mesa';
+
+/* --- convierte lo que escriben en un hashtag: "facultad abierta" -> FacultadAbierta --- */
+function aHashtag(txt){
+  const limpio = String(txt || '')
+    .replace(/#/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')     // deja letras, números y espacios
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!limpio) return '';
+  const partes = limpio.split(' ');
+  if (partes.length === 1) {
+    // una sola palabra: se respeta tal cual la escribieron
+    return partes[0];
+  }
+  return partes.map(p => p.charAt(0).toLocaleUpperCase('es') + p.slice(1)).join('');
+}
+
+function guardar(){
+  const d = {mesa: mesa.value};
+  inputs.forEach(i => d['h' + i.dataset.n] = i.value);
+  try{ localStorage.setItem(CLAVE, JSON.stringify(d)); }catch(e){}
+}
+function restaurar(){
+  try{
+    const d = JSON.parse(localStorage.getItem(CLAVE) || '{}');
+    if(d.mesa) mesa.value = d.mesa;
+    inputs.forEach(i => { const v = d['h' + i.dataset.n]; if(v) i.value = v; });
+  }catch(e){}
+}
+restaurar();
+
+function hashtags(){
+  return inputs.map(i => aHashtag(i.value)).filter(h => h !== '');
+}
+
+function refrescar(){
+  inputs.forEach(i => {
+    const h = aHashtag(i.value);
+    i.closest('.linea-campo').classList.toggle('lleno', h !== '');
+    const v = document.querySelector('[data-vista="' + i.dataset.n + '"]');
+    v.innerHTML = h ? 'Se va a enviar como <b>#' + h + '</b>' : '';
+  });
+
+  const n = hashtags().length;
+  const m = parseInt(mesa.value, 10);
+  const mesaOk = Number.isInteger(m) && m > 0;
+
+  if(!mesaOk){
+    estado.innerHTML = 'Elegí el número de mesa para empezar';
+  } else if(n === 0){
+    estado.innerHTML = '<b>Mesa ' + m + '</b> · escribí al menos un hashtag';
+  } else {
+    estado.innerHTML = '<b>Mesa ' + m + '</b> · ' + n + (n === 1 ? ' hashtag listo' : ' hashtags listos');
+  }
+  btn.disabled = !(mesaOk && n > 0);
+  guardar();
+}
+
+mesa.addEventListener('input', refrescar);
+inputs.forEach(i => i.addEventListener('input', refrescar));
+refrescar();
+
+form.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const campos = [mesa, ...inputs];
+    const idx = campos.indexOf(e.target);
+    if(idx > -1 && campos[idx+1]) campos[idx+1].focus();
+  }
+});
+
+btn.addEventListener('click', async () => {
+  const m = parseInt(mesa.value, 10);
+  if(!Number.isInteger(m) || m < 1){
+    aviso.textContent = 'Falta el número de mesa.';
+    aviso.classList.add('on'); mesa.focus(); return;
+  }
+  const hs = hashtags();
+  if(!hs.length){
+    aviso.textContent = 'Escribí al menos un hashtag antes de enviar.';
+    aviso.classList.add('on'); return;
+  }
+  aviso.classList.remove('on');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  try{
+    await fetch(API, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({mesa: m, hashtags: hs, ts: Date.now()})
+    });
+  }catch(e){ /* respuesta opaca por no-cors: el registro igual se escribe */ }
+
+  document.getElementById('mesaOk').textContent = m;
+  document.getElementById('enviados').innerHTML =
+    hs.map(h => '<span>#' + h + '</span>').join('');
+  form.style.display = 'none';
+  pie.style.display  = 'none';
+  listo.classList.add('on');
+  window.scrollTo(0,0);
+});
+
+document.getElementById('corregir').addEventListener('click', () => {
+  listo.classList.remove('on');
+  form.style.display = '';
+  pie.style.display  = '';
+  btn.textContent = 'Enviar';
+  refrescar();
+  window.scrollTo(0,0);
+});
+</script>
+</body>
+</html>
