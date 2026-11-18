@@ -144,7 +144,7 @@
     <p class="kicker">Taller participativo 2 · PEDI 2027–2032</p>
     <h1>Los hashtags de la Facultad</h1>
     <div class="regla"></div>
-    <p>Completen entre todos los integrantes de la mesa. Hasta cinco hashtags.</p>
+    <p>Completen entre todos los integrantes de la mesa. Hasta tres hashtags.</p>
   </div>
   <svg class="arco" viewBox="0 0 640 16" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -197,10 +197,10 @@
 <script>
 /* ====== CONFIGURACIÓN ====== */
 const API = 'https://script.google.com/macros/s/AKfycbwezfqDSNiATL5-fcsQBASgvxn5vntBZCoytJ3vJ1IvAid2A-Rgtv-yTiQP-EYcFjec/exec';   // URL de implementación del Apps Script
-const CUADROS = 5;
+const CUADROS = 3;
 /* =========================== */
 
-const PISTAS = ['Ej: facultad abierta', 'Ej: más clínica', 'Otra idea', 'Otra idea', 'Otra idea'];
+const PISTAS = ['Ej: facultad abierta', 'Ej: más clínica', 'Otra idea'];
 
 const cont = document.getElementById('campos');
 for (let n = 1; n <= CUADROS; n++) {
@@ -328,6 +328,10 @@ btn.addEventListener('click', async () => {
   form.style.display = 'none';
   pie.style.display  = 'none';
   listo.classList.add('on');
+
+  /* Ya quedó enviado: limpio el borrador para que el próximo que abra la página
+     en este celular (otra mesa, o la prueba previa) no reenvíe estos hashtags. */
+  try{ localStorage.removeItem(CLAVE); }catch(e){}
   window.scrollTo(0,0);
 });
 
